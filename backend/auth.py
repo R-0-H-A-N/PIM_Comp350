@@ -1,0 +1,124 @@
+"""
+This file deals with all auth related functions
+"""
+# TODO: Populate the auth table in the database with actual user data rather than placeholder data
+
+import sqlite3
+
+def login(username, password):  # TODO: Add hashing to the passwords for more security
+    """
+    This function takes care of login verification of users. It takes the input from the form in the frontend and checks if the user exists in the database
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+
+    # Query to check if username and password match
+    cursor.execute("SELECT 1 FROM auth WHERE username = ? AND password = ?", (username, password))
+    result = cursor.fetchone()
+
+    # Close the connection
+    conn.close()
+
+    # Return True if the user exists, else False
+    return result is not None
+
+def add_new_user(username, password):   # TODO: Add a extra layer of security to only allow certain users to make new users. Like an admin key that can be passed to this function that enables the add funciton for the user
+    """
+    This function adds a new user to the database
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+
+    try:
+        # Insert the new user
+        cursor.execute("INSERT INTO auth (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        success = True
+    except sqlite3.IntegrityError:
+        # This occurs if the username already exists (due to UNIQUE constraint)
+        success = False
+    finally:
+        conn.close()
+
+    return success
+
+def delete_user(username, password):    # This function also takes password to ensure that the user that is being deleted actually is authorised to do so
+    """
+    This function deletes a user from the database
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+
+    # Execute delete command
+    cursor.execute("DELETE FROM auth WHERE username = ? and password = ?", (username, password))
+    conn.commit()
+
+    # Check if any row was deleted
+    deleted = cursor.rowcount > 0
+
+    conn.close()
+
+    return deleted
+
+def reset_passwd(username, new_password):   # TODO: Maybe rename this function to something less alarming. Maybe just "change_passwd"
+    """
+    This function allows a user to reset their password given that they know their old password
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+
+    # Update the password for the given username
+    cursor.execute("UPDATE auth SET password = ? WHERE username = ?", (new_password, username))
+    conn.commit()
+
+    # Check if any row was updated
+    updated = cursor.rowcount > 0
+
+    conn.close()
+
+    return updated
+
+
+def get_user_details(username):
+    """
+    This function just returns details on the user such as user id and password. 
+    # TODO: Add that hashing mentioned before
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
+    # Connect to the SQLite database
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+
+    # Query to get user details except password
+    cursor.execute("SELECT id, username, password FROM auth WHERE username = ?", (username,))
+    row = cursor.fetchone()
+
+    conn.close()
+
+    if row:
+        return {'id': row[0], 'username': row[1], 'password': row[2]}
+    else:
+        return None
