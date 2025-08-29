@@ -71,7 +71,7 @@ def delete_user(payload: Credentials):
 
 
 @app.post("/auth/reset-password")
-def reset_password(payload: ResetPasswordRequest):
+def change_password(payload: ResetPasswordRequest):
     updated = auth.reset_passwd(payload.username, payload.new_password)
     if not updated:
         return JSONResponse(status_code=404, content={"error": "User not found"})
@@ -105,6 +105,25 @@ def delete_article(article_id: str):
     if not ok:
         return JSONResponse(status_code=404, content={"error": "Article not found"})
     return JSONResponse(content={"message": "Article deleted"})
+
+@app.put("/particles/{article_id}/edit")
+def edit_article(
+    article_id: str,
+    payload: Credentials,
+    new_title: str = None,
+    new_content: str = None
+):
+    updated = particles.edit_particle(
+        username=payload.username,
+        password=payload.password,
+        particle_id=article_id,
+        new_title=new_title,
+        new_content=new_content
+    )
+    if not updated:
+        return JSONResponse(status_code=403, content={"error": "Edit failed. Check credentials or no changes provided."})
+    return JSONResponse(content={"message": "Article updated"})
+
 
 
 if __name__ == "__main__":
