@@ -9,6 +9,11 @@ def login(username: str, password: str):  # TODO: Add hashing to the passwords f
     """
     This function takes care of login verification of users. It takes the input from the form in the frontend and checks if the user exists in the database
 
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :password: String password for the username provided
+
     SIGNATURE
     ---------
         (str, str) -> bool
@@ -30,6 +35,11 @@ def login(username: str, password: str):  # TODO: Add hashing to the passwords f
 def add_new_user(username: str, password: str):   # TODO: Add a extra layer of security to only allow certain users to make new users. Like an admin key that can be passed to this function that enables the add funciton for the user
     """
     This function adds a new user to the database
+
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -56,6 +66,11 @@ def delete_user(username: str, password: str):    # This function also takes pas
     """
     This function deletes a user from the database
 
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :password: String password for the username provided
+
     SIGNATURE
     ---------
         (str, str) -> bool
@@ -78,6 +93,11 @@ def delete_user(username: str, password: str):    # This function also takes pas
 def change_password(username: str, new_password: str):   # TODO: Maybe rename this function to something less alarming. Maybe just "change_passwd"
     """
     This function allows a user to reset their password given that they know their old password
+
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :new_password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -103,6 +123,10 @@ def get_user_details(username: str):
     """
     This function just returns details on the user such as user id and password. 
     # TODO: Add that hashing mentioned before
+
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
 
     SIGNATURE
     ---------

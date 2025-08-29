@@ -5,9 +5,13 @@ This file handles all operations on particles
 
 import sqlite3
 
-def view_articles(username):
+def view_articles(username: str):
     """
     Return all articles of a user as a list of dictionaries.
+
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
     
     SIGNATURE
     ---------
@@ -21,9 +25,14 @@ def view_articles(username):
 
     return [{'particle_id': row[0], 'title': row[1], 'content': row[2]} for row in rows]
 
-def search_article(username, search_term):
+def search_article(username: str, search_term: str):
     """
     Return articles of a user where the title or content matches the search term.
+
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :search_term: String term given by the user when searching for a particular article
     
     SIGNATURE
     ---------
@@ -46,6 +55,10 @@ def search_article(username, search_term):
 def delete_article(particle_id: int):
     """
     Delete article by article_id. Returns True if deleted, False otherwise.
+
+    PARAMETERS
+    ----------
+    :particle_id: Integer id of the particle assigned to the specific particle
     
     SIGNATURE
     ---------
@@ -66,15 +79,17 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
     This function allows for the updating of particles, such as saving new changes to the title or content.
     Only the owner of the particle (authenticated by username and password) can edit it.
 
-    Args:
-        username (str): The username of the user attempting to edit the particle.
-        password (str): The password of the user (for authentication).
-        particle_id (str): The ID of the particle to edit.
-        new_title (str, optional): The new title for the particle.
-        new_content (str, optional): The new content for the particle.
+    PARAMETERS
+    ----------
+    :username: String for the username of the user
+    :password: String password for the username provided
+    :particle_id: Integer id of the particle assigned to the specific particle
+    :new_title: Optional string for updating the title of the particle 
+    :new_content: Optional string for updating the content of the particle
 
-    Returns:
-        bool: True if the update was successful, False otherwise.
+    SIGNATURE
+    ---------
+        (str, str, str, str, str) -> bool
     """
     import sqlite3
     from backend import auth
