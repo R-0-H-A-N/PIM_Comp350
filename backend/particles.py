@@ -124,10 +124,33 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
     
     return updated
 
-def particle_views_count(particle_id: str):
+def particle_views_count(particle_id):
+    """
+    This function increments and returns the number of times a particle has been viewed.
+    SIGNATURE
+    ---------
+        (int) -> int
+    """
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(particles)")
+    columns = [col[1] for col in cursor.fetchall()]
+    if 'views' not in columns:
+        cursor.execute("ALTER TABLE particles ADD COLUMN views INTEGER DEFAULT 0")
+        conn.commit()
+    cursor.execute("UPDATE particles SET views = COALESCE(views, 0) + 1 WHERE article_id = ?", (particle_id,))
+    conn.commit()
+    cursor.execute("SELECT views FROM particles WHERE article_id = ?", (particle_id,))
+    result = cursor.fetchone()
+    conn.close()
+    return result[0] if result else 0
+
+
+'''def particle_views_count(particle_id: str):
     """
     This functions is somewhat of a counter for the number of times a particle has been viewed.
     # TODO: Maybe make a feature where the most viewed particles are showed higher up on the list when searching for particles. Or make more viewed particles more favoured for instant searches regardless of similarity.
     # TODO: Maybe add a weight system to the particles that weighs between similarity and popularity
     """
-    pass
+    
+    pass'''
