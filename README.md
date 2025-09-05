@@ -81,7 +81,7 @@ Note: CORS is enabled for all origins in development.
 - Location: `backend/db/pim.db`
 - The code assumes two tables: `auth` and `particles`.
 
-Expected schemas (example; adjust as needed to match your DB):
+Schemas:
 
 ```sql
 -- auth table
