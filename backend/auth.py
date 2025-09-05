@@ -1,13 +1,19 @@
 """
 This file deals with all auth related functions
 """
-# TODO: Populate the auth table in the database with actual user data rather than placeholder data
 
 import sqlite3
 
-def login(username, password):  # TODO: Add hashing to the passwords for more security
+def login(username: str, password: str):  
+    # TODO: Add hashing to the passwords for more security
+    # TODO: Add hashed session cookies for the user to have persistant sessions (expiry: 120 mins)
     """
     This function takes care of login verification of users. It takes the input from the form in the frontend and checks if the user exists in the database
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -27,9 +33,14 @@ def login(username, password):  # TODO: Add hashing to the passwords for more se
     # Return True if the user exists, else False
     return result is not None
 
-def add_new_user(username, password):   # TODO: Add a extra layer of security to only allow certain users to make new users. Like an admin key that can be passed to this function that enables the add funciton for the user
+def add_new_user(username: str, password: str):   # TODO: Add a extra layer of security to only allow certain users to make new users. Like an admin key that can be passed to this function that enables the add funciton for the user
     """
     This function adds a new user to the database
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -52,9 +63,14 @@ def add_new_user(username, password):   # TODO: Add a extra layer of security to
 
     return success
 
-def delete_user(username, password):    # This function also takes password to ensure that the user that is being deleted actually is authorised to do so
+def delete_user(username: str, password: str):    # This function also takes password to ensure that the user that is being deleted actually is authorised to do so
     """
     This function deletes a user from the database
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -75,9 +91,14 @@ def delete_user(username, password):    # This function also takes password to e
 
     return deleted
 
-def reset_passwd(username, new_password):   # TODO: Maybe rename this function to something less alarming. Maybe just "change_passwd"
+def change_password(username: str, new_password: str):
     """
     This function allows a user to reset their password given that they know their old password
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+        :new_password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -99,14 +120,18 @@ def reset_passwd(username, new_password):   # TODO: Maybe rename this function t
     return updated
 
 
-def get_user_details(username):
+def get_user_details(username: str):
     """
     This function just returns details on the user such as user id and password. 
     # TODO: Add that hashing mentioned before
 
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+
     SIGNATURE
     ---------
-        (str, str) -> bool
+        (str, str) -> dict
     """
     # Connect to the SQLite database
     conn = sqlite3.connect('db/pim.db')
