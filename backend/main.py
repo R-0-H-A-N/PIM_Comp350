@@ -46,7 +46,7 @@ def health_check():
 
 
 # Auth endpoints
-@app.post("/auth/login")    # TODO: Maybe add session id's to this so that the login can be tracked and stuff
+@app.post("/auth/login")
 def login_user(payload: Credentials):
     is_valid = auth.login(payload.username, payload.password)
     if not is_valid:
@@ -106,7 +106,7 @@ def delete_article(article_id: str):
         return JSONResponse(status_code=404, content={"error": "Article not found"})
     return JSONResponse(content={"message": "Article deleted"})
 
-@app.put("/particles/{article_id}/edit")    #TODOD
+@app.put("/particles/{article_id}/edit")    #TODO Test and edit this function on the basis of functionality and usability
 def edit_article(
     article_id: str,
     payload: Credentials,

@@ -2,6 +2,7 @@
 This file deals with all auth related functions
 """
 # TODO: Populate the auth table in the database with actual user data rather than placeholder data
+# TODO: Populate the particles data in the database with test data to test the functionality of the app
 
 import sqlite3
 
@@ -90,7 +91,7 @@ def delete_user(username: str, password: str):    # This function also takes pas
 
     return deleted
 
-def change_password(username: str, new_password: str):   # TODO: Maybe rename this function to something less alarming. Maybe just "change_passwd"
+def change_password(username: str, new_password: str):
     """
     This function allows a user to reset their password given that they know their old password
 
