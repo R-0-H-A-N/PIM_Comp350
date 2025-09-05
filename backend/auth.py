@@ -1,19 +1,19 @@
 """
 This file deals with all auth related functions
 """
-# TODO: Populate the auth table in the database with actual user data rather than placeholder data
-# TODO: Populate the particles data in the database with test data to test the functionality of the app
 
 import sqlite3
 
-def login(username: str, password: str):  # TODO: Add hashing to the passwords for more security
+def login(username: str, password: str):  
+    # TODO: Add hashing to the passwords for more security
+    # TODO: Add hashed session cookies for the user to have persistant sessions (expiry: 120 mins)
     """
     This function takes care of login verification of users. It takes the input from the form in the frontend and checks if the user exists in the database
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :password: String password for the username provided
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -39,8 +39,8 @@ def add_new_user(username: str, password: str):   # TODO: Add a extra layer of s
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :password: String password for the username provided
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -69,8 +69,8 @@ def delete_user(username: str, password: str):    # This function also takes pas
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :password: String password for the username provided
+        :username: String for the username of the user
+        :password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -97,8 +97,8 @@ def change_password(username: str, new_password: str):
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :new_password: String password for the username provided
+        :username: String for the username of the user
+        :new_password: String password for the username provided
 
     SIGNATURE
     ---------
@@ -127,7 +127,7 @@ def get_user_details(username: str):
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
+        :username: String for the username of the user
 
     SIGNATURE
     ---------

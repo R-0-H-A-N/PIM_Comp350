@@ -11,7 +11,7 @@ def view_articles(username: str):
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
+        :username: String for the username of the user
     
     SIGNATURE
     ---------
@@ -31,8 +31,8 @@ def search_article(username: str, search_term: str):
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :search_term: String term given by the user when searching for a particular article
+        :username: String for the username of the user
+        :search_term: String term given by the user when searching for a particular article
     
     SIGNATURE
     ---------
@@ -58,7 +58,7 @@ def delete_article(particle_id: int):
 
     PARAMETERS
     ----------
-    :particle_id: Integer id of the particle assigned to the specific particle
+        :particle_id: Integer id of the particle assigned to the specific particle
     
     SIGNATURE
     ---------
@@ -81,11 +81,11 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
 
     PARAMETERS
     ----------
-    :username: String for the username of the user
-    :password: String password for the username provided
-    :particle_id: Integer id of the particle assigned to the specific particle
-    :new_title: Optional string for updating the title of the particle 
-    :new_content: Optional string for updating the content of the particle
+        :username: String for the username of the user
+        :password: String password for the username provided
+        :particle_id: Integer id of the particle assigned to the specific particle
+        :new_title: Optional string for updating the title of the particle 
+        :new_content: Optional string for updating the content of the particle
 
     SIGNATURE
     ---------
@@ -127,6 +127,11 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
 def particle_views_count(particle_id):
     """
     This function increments and returns the number of times a particle has been viewed.
+
+    PARAMETERS
+    ----------
+        :particle_id: Integer id of the particle assigned to the specific particle
+
     SIGNATURE
     ---------
         (int) -> int
@@ -145,12 +150,20 @@ def particle_views_count(particle_id):
     conn.close()
     return result[0] if result else 0
 
+def particles_view_adder(particle_id):
+    """
+    This function adds a view to a particle.
 
-'''def particle_views_count(particle_id: str):
+    PARAMETERS
+    ----------
+        :particle_id: Integer id of the particle assigned to the specific particle
+
+    SIGNATURE
+    ---------
+        (int) -> None
     """
-    This functions is somewhat of a counter for the number of times a particle has been viewed.
-    # TODO: Maybe make a feature where the most viewed particles are showed higher up on the list when searching for particles. Or make more viewed particles more favoured for instant searches regardless of similarity.
-    # TODO: Maybe add a weight system to the particles that weighs between similarity and popularity
-    """
-    
-    pass'''
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+    cursor.execute("UPDATE particles SET views = COALESCE(views, 0) + 1 WHERE article_id = ?", (particle_id,))
+    conn.commit()
+    conn.close()
