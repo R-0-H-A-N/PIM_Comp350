@@ -40,6 +40,13 @@ class ResetPasswordRequest(BaseModel):
     new_password: str
 
 
+class ArticleCreate(BaseModel):
+    username: str
+    password: str
+    title: str
+    content: str
+
+
 @app.get("/health")
 def health_check():
     return JSONResponse(content={"status": "ok"})
@@ -87,6 +94,20 @@ def get_user(username: str):
 
 
 # Particle endpoints
+@app.post("/particles/create")
+def create_article(payload: ArticleCreate):
+    # Authenticate user first
+    if not auth.login(payload.username, payload.password):
+        return JSONResponse(status_code=401, content={"error": "Invalid credentials"})
+    
+    # Create the article
+    article_id = particles.create_article(payload.username, payload.title, payload.content)
+    if article_id:
+        return JSONResponse(content={"message": "Article created", "article_id": article_id})
+    else:
+        return JSONResponse(status_code=500, content={"error": "Failed to create article"})
+
+
 @app.get("/particles/{username}")
 def list_articles(username: str):
     items = particles.view_articles(username)

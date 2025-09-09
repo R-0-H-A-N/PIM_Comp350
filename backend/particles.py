@@ -4,6 +4,7 @@ This file handles all operations on particles
 # TODO: Populate the particles table in the database with data
 
 import sqlite3
+import auth
 
 def view_articles(username: str):
     """
@@ -91,8 +92,6 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
     ---------
         (str, str, str, str, str) -> bool
     """
-    import sqlite3
-    from backend import auth
 
     # Authenticate user
     if not auth.login(username, password):
@@ -149,6 +148,36 @@ def particle_views_count(particle_id):
     result = cursor.fetchone()
     conn.close()
     return result[0] if result else 0
+
+def create_article(username: str, title: str, content: str):
+    """
+    This function creates a new article for a user.
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user
+        :title: String title of the article
+        :content: String content of the article
+
+    SIGNATURE
+    ---------
+        (str, str, str) -> int or None
+    """
+    conn = sqlite3.connect('db/pim.db')
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("INSERT INTO particles (username, title, content) VALUES (?, ?, ?)", 
+                      (username, title, content))
+        conn.commit()
+        article_id = cursor.lastrowid
+        return article_id
+    except Exception as e:
+        print(f"Error creating article: {e}")
+        return None
+    finally:
+        conn.close()
+
 
 def particles_view_adder(particle_id):
     """

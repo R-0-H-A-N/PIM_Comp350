@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PIM Dashboard</title>
+		<link rel="stylesheet" href="../src/css/styles.css" />
+	</head>
+	<body>
+		<script src="../src/js/main.js"></script>
+
+		<!-- Loading Animation -->
+		<div id="loading-screen" class="loading-screen">
+			<div class="typewriter">
+				<div class="slide"><i></i></div>
+				<div class="paper"></div>
+				<div class="keyboard"></div>
+			</div>
+			<p class="loading-text">Loading your articles...</p>
+		</div>
+
+		<div class="container dashboard" id="main-content" style="display: none">
+			<div class="header">
+				<h1>PIM Dashboard</h1>
+				<p class="subtitle">Personal Information Manager</p>
+				<div class="user-info">
+					<span id="welcome-user">Welcome, User</span>
+					<button id="logout-btn" class="logout-btn">Logout</button>
+				</div>
+			</div>
+
+			<!-- Search and Create Section -->
+			<div class="controls-section">
+				<div class="search-container">
+					<input
+						type="text"
+						id="search-input"
+						placeholder="Search articles..."
+					/>
+					<button id="search-btn" class="search-btn">Search</button>
+					<button id="clear-search-btn" class="clear-btn">Clear</button>
+				</div>
+				<button id="create-particle-btn" class="create-btn">
+					Create New Article
+				</button>
+			</div>
+
+			<!-- Create/Edit Article Modal -->
+			<div id="article-modal" class="modal">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 id="modal-title">Create New Article</h2>
+						<button id="close-modal" class="close-btn">&times;</button>
+					</div>
+					<form id="article-form">
+						<label for="article-title">Title</label>
+						<input
+							type="text"
+							id="article-title"
+							placeholder="Enter article title"
+							required
+						/>
+
+						<label for="article-content">Content</label>
+						<textarea
+							id="article-content"
+							placeholder="Enter article content"
+							rows="6"
+							required
+						></textarea>
+
+						<div class="modal-buttons">
+							<button type="submit" class="save-btn">Save Particle</button>
+							<button type="button" id="cancel-article" class="cancel-btn">
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- Articles List -->
+			<div class="articles-section">
+				<h3>Your Articles</h3>
+				<div id="articles-container" class="articles-container">
+					<!-- Articles will be dynamically loaded here -->
+				</div>
+				<div id="no-articles" class="no-articles" style="display: none">
+					<p>No articles found. Create your first article!</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
