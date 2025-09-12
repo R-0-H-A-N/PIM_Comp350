@@ -267,6 +267,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			modal.style.display = 'block';
 		};
 
+		window.viewArticleClick = (articleId) => {
+    		const articleCard = document.querySelector(`[data-article-id="${articleId}"]`);
+    		const title = articleCard.querySelector('.article-title').textContent;
+    		const content = articleCard.querySelector('.article-content').textContent;
+    		alert(`Title: ${title}\n\nContent:\n${content}`);
+		};
+
+
 		window.deleteArticleClick = async (articleId) => {
 			if (confirm('Are you sure you want to delete this article?')) {
 				await deleteArticle(articleId);
@@ -328,6 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
 						<button class="article-btn edit-btn" onclick="editArticleClick('${
 							article.particle_id || article.article_id
 						}')">Edit</button>
+						<button class="article-btn view-btn" onclick = "viewArticleClick('${
+							article.particle_id || article.article_id
+						}')">View</button>
 						<button class="article-btn delete-btn" onclick="deleteArticleClick('${
 							article.particle_id || article.article_id
 						}')">Delete</button>
