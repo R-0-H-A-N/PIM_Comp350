@@ -417,22 +417,22 @@ document.addEventListener('DOMContentLoaded', () => {
     async function editArticle(articleId, title, content) {
         const currentUser = localStorage.getItem('pim_username');
         const password = prompt('Enter your password to edit this article:');
-
         if (!password) return;
 
         try {
-            const response = await fetch(`${apiBaseUrl}/particles/${articleId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: currentUser,
-                    password: password,
-                    title: title,
-                    content: content,
-                }),
-            });
+            const response = await fetch(
+                `${apiBaseUrl}/particles/${articleId}/edit?new_title=${encodeURIComponent(title)}&new_content=${encodeURIComponent(content)}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: currentUser,
+                        password: password,
+                    }),
+                }
+            );
 
             const data = await response.json();
 
