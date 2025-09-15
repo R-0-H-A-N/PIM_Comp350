@@ -546,6 +546,32 @@ button.register:hover {
 	border-color: #8b5cf6;
 }
 
+.view-btn {
+	color: #8b5cf6;
+	border-color: #8b5cf6;
+}
+
+.view-btn::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+	transition: left 0.5s ease;
+	z-index: -1;
+}
+
+.view-btn:hover::before {
+	left: 100%;
+}
+
+.view-btn:hover {
+	color: white;
+	box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
 .edit-btn::before {
 	content: '';
 	position: absolute;
@@ -561,6 +587,10 @@ button.register:hover {
 .edit-btn:hover {
 	color: white;
 	box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+.edit-btn:hover {
+	background: #8b5cf6;
 }
 
 .edit-btn:hover::before {
