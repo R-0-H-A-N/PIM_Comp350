@@ -31,13 +31,18 @@ def hash_token(token: str) -> str:
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
-#AUTH FUNCTIONS
+# AUTH FUNCTIONS
 def login(username: str, password: str) -> Optional[str]:
     """
     Verify username and password.
     If successful, create a new session and return session token (raw).
     Returns None on failure.
     """
+
+    # Checking for format to avoid sql injection
+    if not isinstance(username, str) or not username.isalnum() or len(username) > 64:
+        return None
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
