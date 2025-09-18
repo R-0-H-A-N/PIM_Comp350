@@ -213,9 +213,7 @@ button.register:hover {
   color: #fff;
 }
 
-/* =========================
-   MODAL
-   ========================= */
+/* MODAL */
 .modal {
   display: none;
   position: fixed;
@@ -774,4 +772,5 @@ button.register:hover {
 			22px 10px 0 var(--key), 37px 12px 0 var(--key), 52px 10px 0 var(--key),
 			60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key);
 	}
+
 }
