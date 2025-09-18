@@ -1,7 +1,6 @@
 """
 This file handles all operations on particles
 """
-# TODO: Populate the particles table in the database with data
 
 import sqlite3
 import auth

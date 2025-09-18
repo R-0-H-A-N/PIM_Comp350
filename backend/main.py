@@ -68,7 +68,7 @@ def register_user(payload: Credentials):
     return JSONResponse(content={"message": "User created"})
 
 
-@app.delete("/auth/delete") # TODO: Add some layer of security on this function
+@app.delete("/auth/delete")
 def delete_user(payload: Credentials):
     deleted = auth.delete_user(payload.username, payload.password)
     if not deleted:
@@ -84,7 +84,7 @@ def change_password(payload: ResetPasswordRequest):
     return JSONResponse(content={"message": "Password updated"})
 
 
-@app.get("/auth/user/{username}")   # TODO: Add some layer of security on this function
+@app.get("/auth/user/{username}")
 def get_user(username: str):
     user = auth.get_user_details(username)
     if not user:
@@ -126,7 +126,7 @@ def delete_article(article_id: str):
         return JSONResponse(status_code=404, content={"error": "Article not found"})
     return JSONResponse(content={"message": "Article deleted"})
 
-@app.put("/particles/{article_id}/edit")    #TODO Test and edit this function on the basis of functionality and usability
+@app.put("/particles/{article_id}/edit")
 def edit_article(
     article_id: str,
     payload: Credentials,
@@ -226,7 +226,7 @@ def register_user(payload: Credentials):
     return JSONResponse(content={"message": "User created"})
 
 
-@app.delete("/auth/delete") # TODO: Add some layer of security on this function
+@app.delete("/auth/delete")
 def delete_user(payload: Credentials):
     deleted = auth.delete_user(payload.username, payload.password)
     if not deleted:
@@ -242,7 +242,7 @@ def change_password(payload: ResetPasswordRequest):
     return JSONResponse(content={"message": "Password updated"})
 
 
-@app.get("/auth/user/{username}")   # TODO: Add some layer of security on this function
+@app.get("/auth/user/{username}")
 def get_user(username: str):
     user = auth.get_user_details(username)
     if not user:
@@ -284,7 +284,7 @@ def delete_article(article_id: str):
         return JSONResponse(status_code=404, content={"error": "Article not found"})
     return JSONResponse(content={"message": "Article deleted"})
 
-@app.put("/particles/{article_id}/edit")    #TODO Test and edit this function on the basis of functionality and usability
+@app.put("/particles/{article_id}/edit")
 def edit_article(
     article_id: str,
     payload: Credentials,
