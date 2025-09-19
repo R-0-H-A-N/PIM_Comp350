@@ -22,10 +22,15 @@
 		<div class="container dashboard" id="main-content" style="display: none">
 			<div class="header">
 				<h1>PIM Dashboard</h1>
-				<p class="subtitle">Personal Information Manager</p>
 				<div class="user-info">
 					<span id="welcome-user">Welcome, User</span>
-					<button id="logout-btn" class="logout-btn">Logout</button>
+					<button
+						id="logout-btn"
+						class="logout-btn"
+						aria-label="Log out of your account"
+					>
+						Logout
+					</button>
 				</div>
 			</div>
 
@@ -37,10 +42,26 @@
 						id="search-input"
 						placeholder="Search articles..."
 					/>
-					<button id="search-btn" class="search-btn">Search</button>
-					<button id="clear-search-btn" class="clear-btn">Clear</button>
+					<button
+						id="search-btn"
+						class="search-btn is-filled"
+						aria-label="Search articles"
+					>
+						Search
+					</button>
+					<button
+						id="clear-search-btn"
+						class="clear-btn is-filled"
+						aria-label="Clear search"
+					>
+						Clear
+					</button>
 				</div>
-				<button id="create-particle-btn" class="create-btn">
+				<button
+					id="create-particle-btn"
+					class="create-btn is-filled"
+					aria-label="Create a new article"
+				>
 					Create New Article
 				</button>
 			</div>
@@ -50,7 +71,9 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h2 id="modal-title">Create New Article</h2>
-						<button id="close-modal" class="close-btn">&times;</button>
+						<button id="close-modal" class="close-btn" aria-label="Close modal">
+							&times;
+						</button>
 					</div>
 					<form id="article-form">
 						<label for="article-title">Title</label>
@@ -70,8 +93,19 @@
 						></textarea>
 
 						<div class="modal-buttons">
-							<button type="submit" class="save-btn">Save Particle</button>
-							<button type="button" id="cancel-article" class="cancel-btn">
+							<button
+								type="submit"
+								class="save-btn is-filled"
+								aria-label="Save article"
+							>
+								Save Particle
+							</button>
+							<button
+								type="button"
+								id="cancel-article"
+								class="cancel-btn"
+								aria-label="Cancel and close"
+							>
 								Cancel
 							</button>
 						</div>

@@ -1,6 +1,6 @@
 body {
 	background: #101010;
-	font-family: Arial, sans-serif;
+	font-family: monospace, sans-serif;
 }
 
 .container {
@@ -14,7 +14,6 @@ body {
 	text-align: center;
 }
 
-/* Dashboard-specific container adjustments for better spacing and alignment */
 .container.dashboard {
 	width: 100%;
 	max-width: 1100px;
@@ -26,6 +25,11 @@ h1 {
 	margin-bottom: 0;
 	font-size: 2em;
 	font-weight: bold;
+}
+
+button:focus-visible {
+	outline: 3px solid currentColor;
+	outline-offset: 3px;
 }
 
 .subtitle {
@@ -230,6 +234,39 @@ button.register:hover {
 	background: transparent;
 }
 
+.create-btn.is-filled {
+	background: #8b5cf6;
+	color: #fff;
+	box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+}
+
+.create-btn.is-filled:hover {
+	background: #7c3aed;
+	box-shadow: 0 0 18px rgba(124, 58, 237, 0.45);
+}
+
+.search-btn.is-filled {
+	background: #5c86ff;
+	color: #fff;
+	box-shadow: 0 0 12px rgba(92, 134, 255, 0.35);
+}
+
+.search-btn.is-filled:hover {
+	background: #4f46e5;
+	box-shadow: 0 0 18px rgba(79, 70, 229, 0.45);
+}
+
+.clear-btn.is-filled {
+	background: #6366f1;
+	color: #fff;
+	box-shadow: 0 0 12px rgba(99, 102, 241, 0.35);
+}
+
+.clear-btn.is-filled:hover {
+	background: #4f46e5;
+	box-shadow: 0 0 18px rgba(79, 70, 229, 0.45);
+}
+
 .search-btn {
 	color: #5c86ff;
 	border-color: #5c86ff;
@@ -421,6 +458,17 @@ button.register:hover {
 	position: relative;
 	overflow: hidden;
 	background: transparent;
+}
+
+.save-btn.is-filled {
+	background: #5c86ff;
+	color: #fff;
+	box-shadow: 0 0 12px rgba(92, 134, 255, 0.35);
+}
+
+.save-btn.is-filled:hover {
+	background: #4f46e5;
+	box-shadow: 0 0 18px rgba(79, 70, 229, 0.45);
 }
 
 .save-btn {
@@ -688,7 +736,6 @@ button.register:hover {
 	font-weight: 300;
 }
 
-/* Typewriter Animation - From Uiverse.io by Nawsome */
 .typewriter {
 	--blue: #8b5cf6;
 	--blue-dark: #7c3aed;
@@ -1003,5 +1050,16 @@ button.register:hover {
 
 	.modal-buttons {
 		flex-direction: column;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
 	}
 }

@@ -122,7 +122,7 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
     
     return updated
 
-def particle_views_count(particle_id):
+def particle_views_count(particle_id: int):
     """
     This function increments and returns the number of times a particle has been viewed.
 
@@ -178,7 +178,7 @@ def create_article(username: str, title: str, content: str):
         conn.close()
 
 
-def particles_view_adder(particle_id):
+def particles_view_adder(particle_id: int):
     """
     This function adds a view to a particle.
 

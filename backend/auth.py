@@ -13,21 +13,79 @@ from typing import Optional
 DB_PATH = "db/pim.db"
 SESSION_EXPIRY = 120 * 60  # 120 minutes
 
+def reauthenticate_on_expiry(username: str, get_password_input_func, logout_func, verify_password_func, max_attempts: int = 3) -> bool:
+    """
+    Prompt the user to re-enter their password when the session expires.
+    If the password is entered incorrectly 3 times, log out the session.
+
+    PARAMETERS
+    ----------
+        :username: String for the username of the user whose session expired
+        :get_password_input_func: Callable that prompts the user for their password and returns it as a string
+        :logout_func: Callable that logs out the user/session
+        :verify_password_func: Callable that takes (username, password) and returns True if valid, else False
+        :max_attempts: Integer for maximum number of allowed attempts (default 3)
+
+    SIGNATURE
+    ---------
+        (str, Callable, Callable, Callable, int) -> bool
+    """
+    attempts = 0
+    while attempts < max_attempts:
+        password = get_password_input_func()
+        if verify_password_func(username, password):
+            return True
+        attempts += 1
+    # Too many failed attempts, log out
+    logout_func(username)
+    return False
+
 # HELPER FUNCTIONS
 def hash_password(password: str) -> str:
-    """Generate a salted bcrypt hash for the given password"""
+    """
+    Generate a salted bcrypt hash for the given password.
+
+    PARAMETERS
+    ----------
+        :password: String password to hash
+
+    SIGNATURE
+    ---------
+        (str) -> str
+    """
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    """Verify a password against a bcrypt hash"""
+    """
+    Verify a password against a bcrypt hash.
+
+    PARAMETERS
+    ----------
+        :password: String password to verify
+        :hashed: String bcrypt hash to check against
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
+    """
     # hashed is stored as decoded string; bcrypt expects bytes
     return bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8"))
 
 
 def hash_token(token: str) -> str:
-    """Hash session token with SHA256 before storing in DB"""
+    """
+    Hash session token with SHA256 before storing in DB.
+
+    PARAMETERS
+    ----------
+        :token: String session token
+
+    SIGNATURE
+    ---------
+        (str) -> str
+    """
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
@@ -37,6 +95,15 @@ def login(username: str, password: str) -> Optional[str]:
     Verify username and password.
     If successful, create a new session and return session token (raw).
     Returns None on failure.
+
+    PARAMETERS
+    ----------
+        :username: String username to authenticate
+        :password: String password to authenticate
+
+    SIGNATURE
+    ---------
+        (str, str) -> Optional[str]
     """
 
     # Checking for format to avoid sql injection
@@ -73,7 +140,17 @@ def login(username: str, password: str) -> Optional[str]:
 
 
 def validate_session(token: str) -> Optional[int]:
-    """Check if a given session token is valid and not expired. Returns user_id or None."""
+    """
+    Check if a given session token is valid and not expired. Returns user_id or None.
+
+    PARAMETERS
+    ----------
+        :token: String session token
+
+    SIGNATURE
+    ---------
+        (str) -> Optional[int]
+    """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -96,6 +173,17 @@ def add_new_user(
       - if admin_key and master_admin_key are provided, will validate them
         (useful if you want to require an admin key for user creation).
     Returns True on success, False if username already exists or admin key mismatch.
+
+    PARAMETERS
+    ----------
+        :username: String username for the new user
+        :password: String password for the new user
+        :admin_key: Optional string admin key for validation
+        :master_admin_key: Optional string master admin key for validation
+
+    SIGNATURE
+    ---------
+        (str, str, Optional[str], Optional[str]) -> bool
     """
     # If master_admin_key provided, require admin_key to match
     if master_admin_key is not None and admin_key != master_admin_key:
@@ -122,6 +210,15 @@ def delete_user(username: str, password: str) -> bool:
     """
     Delete a user (verify password before deleting).
     Returns True if deleted, False otherwise.
+
+    PARAMETERS
+    ----------
+        :username: String username to delete
+        :password: String password for verification
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -143,6 +240,16 @@ def change_password(username: str, old_password: str, new_password: str) -> bool
     """
     Change password (must provide old password).
     Returns True if changed, False otherwise.
+
+    PARAMETERS
+    ----------
+        :username: String username whose password is to be changed
+        :old_password: String current password
+        :new_password: String new password
+
+    SIGNATURE
+    ---------
+        (str, str, str) -> bool
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -166,6 +273,15 @@ def reset_passwd(username: str, new_password: str) -> bool:
     """
     Reset password without needing the old password (useful for admin resets).
     Returns True if updated, False if user not found.
+
+    PARAMETERS
+    ----------
+        :username: String username whose password is to be reset
+        :new_password: String new password
+
+    SIGNATURE
+    ---------
+        (str, str) -> bool
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -187,6 +303,14 @@ def reset_passwd(username: str, new_password: str) -> bool:
 def get_user_details(username: str):
     """
     Return user details (excluding password).
+
+    PARAMETERS
+    ----------
+        :username: String username to fetch details for
+
+    SIGNATURE
+    ---------
+        (str) -> dict or None
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
