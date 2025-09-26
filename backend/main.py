@@ -49,12 +49,28 @@ class ArticleCreate(BaseModel):
 
 @app.get("/health")
 def health_check():
+    """
+    Health check endpoint.
+
+    Returns:
+        JSONResponse: {"status": "ok"}
+    """  
     return JSONResponse(content={"status": "ok"})
 
 
 # Auth endpoints
 @app.post("/auth/login")
 def login_user(payload: Credentials):
+    """
+    Login endpoint.
+
+    Args:
+        payload (Credentials): Username and password.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     token = auth.login(payload.username, payload.password)
     if not token:
         return JSONResponse(status_code=401, content={"error": "Invalid username or password"})
@@ -62,6 +78,16 @@ def login_user(payload: Credentials):
 
 @app.post("/auth/register", status_code=201)
 def register_user(payload: Credentials):
+    """
+    Register new user.
+
+    Args:
+        payload (Credentials): Username and password.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     created = auth.add_new_user(payload.username, payload.password)
     if not created:
         return JSONResponse(status_code=409, content={"error": "Username already exists"})
@@ -70,6 +96,16 @@ def register_user(payload: Credentials):
 
 @app.delete("/auth/delete")
 def delete_user(payload: Credentials):
+    """
+    Delete user.
+
+    Args:
+        payload (Credentials): Username and password.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     deleted = auth.delete_user(payload.username, payload.password)
     if not deleted:
         return JSONResponse(status_code=404, content={"error": "User not found or password incorrect"})
@@ -78,6 +114,17 @@ def delete_user(payload: Credentials):
 
 @app.post("/auth/reset-password")
 def change_password(payload: ResetPasswordRequest):
+
+    """
+    Reset password.
+
+    Args:
+        payload (ResetPasswordRequest): Username and new password.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     updated = auth.reset_passwd(payload.username, payload.new_password)
     if not updated:
         return JSONResponse(status_code=404, content={"error": "User not found"})
@@ -86,6 +133,17 @@ def change_password(payload: ResetPasswordRequest):
 
 @app.get("/auth/user/{username}")
 def get_user(username: str):
+
+    """
+    Get user details.
+
+    Args:
+        username (str): Username.
+
+    Returns:
+        JSONResponse: User details or error.
+    """
+
     user = auth.get_user_details(username)
     if not user:
         return JSONResponse(status_code=404, content={"error": "User not found"})
@@ -95,6 +153,17 @@ def get_user(username: str):
 # Particle endpoints
 @app.post("/particles/create")
 def create_article(payload: ArticleCreate):
+
+    """
+    Create a new article.
+
+    Args:
+        payload (ArticleCreate): Article data.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     # Authenticate user first
     if not auth.login(payload.username, payload.password):
         return JSONResponse(status_code=401, content={"error": "Invalid credentials"})
@@ -109,18 +178,51 @@ def create_article(payload: ArticleCreate):
 
 @app.get("/particles/{username}")
 def list_articles(username: str):
+    """
+    List all articles for a user.
+
+    Args:
+        username (str): Username.
+
+    Returns:
+        JSONResponse: List of articles.
+    """
+
     items = particles.view_articles(username)
     return JSONResponse(content={"items": items, "count": len(items)})
 
 
 @app.get("/particles/{username}/search")
 def search_articles(username: str, q: str = Query(..., min_length=1, description="Search query")):
+    
+    """
+    Search articles for a user.
+
+    Args:
+        username (str): Username.
+        q (str): Search query.
+
+    Returns:
+        JSONResponse: List of matching articles.
+    """
+
     items = particles.search_article(username, q)
     return JSONResponse(content={"items": items, "count": len(items)})
 
 
 @app.delete("/particles/{article_id}")
 def delete_article(article_id: str):
+
+    """
+    Delete an article.
+
+    Args:
+        article_id (str): Article ID.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+        
     ok = particles.delete_article(article_id)
     if not ok:
         return JSONResponse(status_code=404, content={"error": "Article not found"})
@@ -133,6 +235,20 @@ def edit_article(
     new_title: str = None,
     new_content: str = None
 ):
+    
+    """
+    Edit an article.
+
+    Args:
+        article_id (str): Article ID.
+        payload (Credentials): Username and password.
+        new_title (str, optional): New title.
+        new_content (str, optional): New content.
+
+    Returns:
+        JSONResponse: Success or error message.
+    """
+
     updated = particles.edit_particle(
         username=payload.username,
         password=payload.password,
@@ -147,6 +263,16 @@ def edit_article(
 
 @app.get("/particles/{article_id}")
 def get_article(article_id: str):
+    """
+    Get article by ID.
+
+    Args:
+        article_id (str): Article ID.
+
+    Returns:
+        JSONResponse: Article details or error.
+    """
+    
     item = particles.get_article_by_id(article_id)
     if not item:
         return JSONResponse(status_code=404, content={"error": "Article not found"})

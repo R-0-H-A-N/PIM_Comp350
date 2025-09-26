@@ -9,13 +9,11 @@ def view_articles(username: str):
     """
     Return all articles of a user as a list of dictionaries.
 
-    PARAMETERS
-    ----------
-        :username: String for the username of the user
-    
-    SIGNATURE
-    ---------
-        (str) -> list[dict]
+    Args:
+        username (str): Username of the user.
+
+    Returns:
+        list[dict]: List of articles.
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()
@@ -29,14 +27,12 @@ def search_article(username: str, search_term: str):
     """
     Return articles of a user where the title or content matches the search term.
 
-    PARAMETERS
-    ----------
-        :username: String for the username of the user
-        :search_term: String term given by the user when searching for a particular article
-    
-    SIGNATURE
-    ---------
-        (str) -> list[dict]
+    Args:
+        username (str): Username of the user.
+        search_term (str): Search term.
+
+    Returns:
+        list[dict]: List of matching articles.
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()
@@ -56,13 +52,11 @@ def delete_article(particle_id: int):
     """
     Delete article by article_id. Returns True if deleted, False otherwise.
 
-    PARAMETERS
-    ----------
-        :particle_id: Integer id of the particle assigned to the specific particle
-    
-    SIGNATURE
-    ---------
-        (str) -> bool    
+    Args:
+        particle_id (int): ID of the particle.
+
+    Returns:
+        bool: True if deleted, False otherwise.
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()
@@ -76,20 +70,17 @@ def delete_article(particle_id: int):
 
 def edit_particle(username: str, password: str, particle_id: str, new_title: str = None, new_content: str = None) -> bool:
     """
-    This function allows for the updating of particles, such as saving new changes to the title or content.
-    Only the owner of the particle (authenticated by username and password) can edit it.
+    Update particle title/content. Only owner can edit.
 
-    PARAMETERS
-    ----------
-        :username: String for the username of the user
-        :password: String password for the username provided
-        :particle_id: Integer id of the particle assigned to the specific particle
-        :new_title: Optional string for updating the title of the particle 
-        :new_content: Optional string for updating the content of the particle
+    Args:
+        username (str): Username.
+        password (str): Password.
+        particle_id (str): Particle ID.
+        new_title (str, optional): New title.
+        new_content (str, optional): New content.
 
-    SIGNATURE
-    ---------
-        (str, str, str, str, str) -> bool
+    Returns:
+        bool: True if updated, False otherwise.
     """
 
     # Authenticate user
@@ -124,15 +115,13 @@ def edit_particle(username: str, password: str, particle_id: str, new_title: str
 
 def particle_views_count(particle_id):
     """
-    This function increments and returns the number of times a particle has been viewed.
+    Increment and return the number of times a particle has been viewed.
 
-    PARAMETERS
-    ----------
-        :particle_id: Integer id of the particle assigned to the specific particle
+    Args:
+        particle_id (int): Particle ID.
 
-    SIGNATURE
-    ---------
-        (int) -> int
+    Returns:
+        int: Number of views.
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()
@@ -150,17 +139,15 @@ def particle_views_count(particle_id):
 
 def create_article(username: str, title: str, content: str):
     """
-    This function creates a new article for a user.
+    Create a new article for a user.
 
-    PARAMETERS
-    ----------
-        :username: String for the username of the user
-        :title: String title of the article
-        :content: String content of the article
+    Args:
+        username (str): Username.
+        title (str): Article title.
+        content (str): Article content.
 
-    SIGNATURE
-    ---------
-        (str, str, str) -> int or None
+    Returns:
+        int or None: Article ID if created, else None.
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()
@@ -180,15 +167,13 @@ def create_article(username: str, title: str, content: str):
 
 def particles_view_adder(particle_id):
     """
-    This function adds a view to a particle.
+    Adds a view to a particle.
 
-    PARAMETERS
-    ----------
-        :particle_id: Integer id of the particle assigned to the specific particle
+    Args:
+        particle_id (int): Particle ID.
 
-    SIGNATURE
-    ---------
-        (int) -> None
+    Returns:
+        None
     """
     conn = sqlite3.connect('db/pim.db')
     cursor = conn.cursor()

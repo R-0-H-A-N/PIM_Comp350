@@ -15,19 +15,45 @@ SESSION_EXPIRY = 120 * 60  # 120 minutes
 
 # HELPER FUNCTIONS
 def hash_password(password: str) -> str:
-    """Generate a salted bcrypt hash for the given password"""
+    """
+    Generate a salted bcrypt hash for the given password.
+
+    Args:
+        password (str): The plaintext password.
+
+    Returns:
+        str: The bcrypt hash as a string.
+    """
+    
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 def verify_password(password: str, hashed: str) -> bool:
-    """Verify a password against a bcrypt hash"""
+    """
+    Verify a password against a bcrypt hash.
+
+    Args:
+        password (str): The plaintext password.
+        hashed (str): The bcrypt hash.
+
+    Returns:
+        bool: True if password matches hash, False otherwise.
+    """
     # hashed is stored as decoded string; bcrypt expects bytes
     return bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8"))
 
 
 def hash_token(token: str) -> str:
-    """Hash session token with SHA256 before storing in DB"""
+    """
+    Hash session token with SHA256 before storing in DB.
+
+    Args:
+        token (str): The session token.
+
+    Returns:
+        str: The SHA256 hash of the token.
+    """
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
@@ -37,6 +63,13 @@ def login(username: str, password: str) -> Optional[str]:
     Verify username and password.
     If successful, create a new session and return session token (raw).
     Returns None on failure.
+
+    Args:
+        username (str): Username.
+        password (str): Password.
+
+    Returns:
+        Optional[str]: Session token if successful, else None.
     """
 
     # Checking for format to avoid sql injection
@@ -73,7 +106,15 @@ def login(username: str, password: str) -> Optional[str]:
 
 
 def validate_session(token: str) -> Optional[int]:
-    """Check if a given session token is valid and not expired. Returns user_id or None."""
+    """
+    Check if a given session token is valid and not expired.
+
+    Args:
+        token (str): Session token.
+
+    Returns:
+        Optional[int]: user_id if valid, else None. """
+    
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -91,11 +132,16 @@ def add_new_user(
     username: str, password: str, admin_key: Optional[str] = None, master_admin_key: Optional[str] = None
 ) -> bool:
     """
-    Add a new user. Backwards compatible:
-      - main.py calls add_new_user(username, password)
-      - if admin_key and master_admin_key are provided, will validate them
-        (useful if you want to require an admin key for user creation).
-    Returns True on success, False if username already exists or admin key mismatch.
+    Add a new user. If admin_key and master_admin_key are provided, will validate them.
+
+    Args:
+        username (str): Username.
+        password (str): Password.
+        admin_key (Optional[str]): Admin key.
+        master_admin_key (Optional[str]): Master admin key.
+
+    Returns:
+        bool: True on success, False otherwise.
     """
     # If master_admin_key provided, require admin_key to match
     if master_admin_key is not None and admin_key != master_admin_key:
@@ -121,7 +167,13 @@ def add_new_user(
 def delete_user(username: str, password: str) -> bool:
     """
     Delete a user (verify password before deleting).
-    Returns True if deleted, False otherwise.
+
+    Args:
+        username (str): Username.
+        password (str): Password.
+
+    Returns:
+        bool: True if deleted, False otherwise.
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -142,7 +194,14 @@ def delete_user(username: str, password: str) -> bool:
 def change_password(username: str, old_password: str, new_password: str) -> bool:
     """
     Change password (must provide old password).
-    Returns True if changed, False otherwise.
+
+    Args:
+        username (str): Username.
+        old_password (str): Old password.
+        new_password (str): New password.
+
+    Returns:
+        bool: True if changed, False otherwise.
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -164,8 +223,14 @@ def change_password(username: str, old_password: str, new_password: str) -> bool
 
 def reset_passwd(username: str, new_password: str) -> bool:
     """
-    Reset password without needing the old password (useful for admin resets).
-    Returns True if updated, False if user not found.
+    Reset password without needing the old password.
+
+    Args:
+        username (str): Username.
+        new_password (str): New password.
+
+    Returns:
+        bool: True if updated, False otherwise.
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -187,6 +252,12 @@ def reset_passwd(username: str, new_password: str) -> bool:
 def get_user_details(username: str):
     """
     Return user details (excluding password).
+
+    Args:
+        username (str): Username.
+
+    Returns:
+        dict or None: User details dict or None if not found.
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
