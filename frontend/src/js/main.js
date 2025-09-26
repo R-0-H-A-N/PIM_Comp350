@@ -299,14 +299,45 @@ document.addEventListener('DOMContentLoaded', () => {
             viewMode = true;
             modal.style.display = 'block';
         };
-
         window.deleteArticleClick = async (articleId) => {
-            if (confirm('Are you sure you want to delete this article?')) {
-                await deleteArticle(articleId);
-                loadArticles();
+        const password = prompt('Enter your password to delete this article:');
+        if (!password) return;
+        if (confirm('Are you sure you want to delete this article?')) {
+            await deleteArticle(articleId, password);
+            loadArticles();
+        }
+    };
+
+    // Update deleteArticle to accept password
+    async function deleteArticle(articleId, password) {
+        const currentUser = localStorage.getItem('pim_username');
+        try {
+            const response = await fetch(`${apiBaseUrl}/particles/${articleId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: currentUser,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Article deleted successfully!');
+            } else {
+                alert(data.error || 'Failed to delete article');
             }
-        };
+        } catch (error) {
+            console.error('Error deleting article:', error);
+            alert('Error deleting article');
+        }
     }
+}   
+
+
 
     async function loadArticles() {
         const currentUser = localStorage.getItem('pim_username');

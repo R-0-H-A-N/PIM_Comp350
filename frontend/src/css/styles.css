@@ -774,3 +774,20 @@ button.register:hover {
 	}
 
 }
+
+#article-title,
+#article-content,
+#view-article-title,
+#view-article-content {
+    font-size: 1.25em;
+    padding: 18px;
+    min-height: 56px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#article-content,
+#view-article-content {
+    min-height: 180px;
+    resize: vertical;
+}
